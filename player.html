@@ -1,0 +1,102 @@
+<html>
+	<head>
+		<script type="text/javascript" charset="utf-8" src="cordova-2.3.0.js"></script>
+		<script type="text/javascript">
+			var tipColor = "330000";
+			
+			var mml = "a4b4c5b4c5e5b40000e4e4a4g4a4c5g40000e4e4f4e4f4c5e40000c5c5c5b4f4f4b4b40000a4b4c5b4c5e5b40000e4e4a4g4a4c5g40000e4f4c5b4b4c5d5d5e5c500c5b4a4a4b4g4a40000c5d5e5d5e5g5d50000g4g4c5b4c5e5e5000000a4b4c5b4d5d5c5g4g400f5e5d5c5e5000000e50000e5a500g5g5e5d5c500c5d5c5d5d5g5e50000e5a500g500e5d5c50000c5d5c5d5d5b4a40000a4b4a4";
+			
+			var soundFonts = new Array('e4', 'f4', 'g4', 'a4', 'b4', 'c5', 'd5', 'e5', 'f5', 'g5', 'a5');
+			var colors = new Array('00BFFF', '00FF7F', 'E9967A', 'FA8072', 'FF0000', 'FFA500', 'FFFF00', 'E0FFFF', '9ACD32', '8A2BE2', '6495ED');
+			
+			var isMounseDown = false, path, params;
+			
+			document.addEventListener("deviceready", onDeviceReady, false);
+			// window.onload = onDeviceReady;
+			
+			function onDeviceReady() {
+				var pianoTable = document.getElementById('pianoTable');
+				
+				params = getQueryParams(document.location.search);
+				path = getPhoneGapPath();
+					
+				soundFonts.forEach(function(soundFont, index){
+					if (params[soundFont]) {
+						pianoTable.innerHTML += "<td id='td_" + soundFont + "' ontouchstart=playAudio('" + soundFont + "','#" + colors[index] + "') ontouchend=endAudio()>" + soundFont + "</td>";
+					}
+				});
+				
+				var timer = setInterval(function(){
+					var sound = mml.substr(0, 2);
+					mml = mml.substr(2);
+
+					if (!isMounseDown || params.autoPlay) {
+						if (!isMounseDown) {
+							endAudio();
+						}
+						var list = document.getElementsByTagName('td');
+						for (var i = 0; i < list.length; i++) {
+							var td = list[i];
+							if (td.id == 'td_' + sound) {
+								td.style.backgroundColor = tipColor;
+								if (params.autoPlay) {
+									td.ontouchstart();
+									isMounseDown = false;
+								}
+							} else {
+								td.style.backgroundColor = 'transparent';
+							}
+						}
+					}
+				}, 500);
+			}
+			
+			function playAudio(soundFont, color) {
+				document.body.style.backgroundColor = color;
+				isMounseDown = true;
+				audioPlayer = new Media(path + soundFont + ".wav", onSuccess, onFailed);
+				audioPlayer.play();
+			}
+			
+			function endAudio() {
+				document.body.style.backgroundColor='black';
+				isMounseDown = false;
+			}
+			
+			function onSuccess(){
+				
+			}
+			
+			function onFailed(error) {
+				alert(error.message);
+			}
+			
+			function getPhoneGapPath() {
+			    var selfpath = window.location.pathname;
+			    var phoneGapPath = selfpath.substring(0, selfpath.lastIndexOf('/') + 1);
+			    return phoneGapPath;
+			}
+
+			function getQueryParams(qs) {
+			    qs = qs.split("+").join(" ");
+
+			    var params = {}, tokens,
+			        re = /[?&]?([^=]+)=([^&]*)/g;
+
+			    while (tokens = re.exec(qs)) {
+			        params[decodeURIComponent(tokens[1])]
+			            = decodeURIComponent(tokens[2]);
+			    }
+
+			    return params;
+			}
+		</script>
+	</head>
+	<body style="background-color:black;color:white;">
+		<button style="position:absolute;top:10px;right:10px;" onclick="javascript:window.location='index.html'">back</button>
+		<table style="width:100%;height:100%;" border="1">
+			<tr id="pianoTable">
+			</tr>
+		</table>
+	<body>
+</html>

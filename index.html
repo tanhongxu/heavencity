@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			function selectAll() {
+				var list = document.getElementsByTagName('input');
+				for (var i = 0; i < list.length; i++) {
+					if (list[i].type == 'checkbox' && list[i].name != 'autoPlay') {
+						list[i].checked = true;
+					}
+				}
+			}
+			function deselectAll() {
+				var list = document.getElementsByTagName('input');
+				for (var i = 0; i < list.length; i++) {
+					if (list[i].type == 'checkbox' && list[i].name != 'autoPlay') {
+						list[i].checked = false;
+					}
+				}
+			}
+		</script>
+	</head>
+	<body style="margin:5px;">
+		<form action="player.html">
+			<div>
+				<button onClick="selectAll();" type="button">select all</button>
+				<button onClick="deselectAll();" type="button">deselect all</button>
+			</div>
+			<div>
+				<input type="checkbox" name="e4" value="e4">4e</input>
+				<input type="checkbox" name="f4" value="f4">4f</input>
+				<input type="checkbox" name="g4" value="g4">4g</input>
+				<input type="checkbox" name="a4" value="a4">4a</input>
+				<input type="checkbox" name="b4" value="b4">4b</input>
+				<input type="checkbox" name="c5" value="c5">5c</input>
+				<input type="checkbox" name="d5" value="d5">5d</input>
+				<input type="checkbox" name="e5" value="e5">5e</input>
+				<input type="checkbox" name="f5" value="f5">5f</input>
+				<input type="checkbox" name="g5" value="g5">5g</input>
+				<input type="checkbox" name="a5" value="a5">5a</input>
+			</div>
+			<button type="submit" style="margin:20px;width:50%;height:30%;">start</button>
+			<div>
+				<input type="checkbox" name="autoPlay" value="autoPlay">AutoPlay</input>
+			</div>
+		</form>
+	</body>
+</html>
